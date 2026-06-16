@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
+body {
+    margin: 100px auto;
+    padding: 150px auto;
+    background: rgb(0, 0, 67);
+    font-size: medium;
+    font-family: 'Cinzel', cinzel;
+}
+
+.container {
+    display: flex;
+
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: 20px;
+}
+
+.container > h1 {
+    color: rgb(0, 128, 248);
+    font-size: 75px;
+    font-weight:1000;
+}
+
+.container > button {
+    height: 30px;
+    width: 150px;
+    font-family: 'Cinzel', cinzel;
+    font-weight: 700;
+}
+
