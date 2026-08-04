@@ -25,7 +25,7 @@ new p5(function(p5)
     p5.setup = function() {
         p5.createCanvas(p5.windowWidth, p5.windowHeight);
         
-        mc = new Player(Math.floor(screenCols / 2), Math.floor(screenRows / 2) , screenCells,0,0,cellHeight,cellWidth);
+        mc = new Player(Math.floor(screenCols / 2), Math.floor(screenRows / 2) , screenCells,0,0,cellHeight,cellWidth,screenRows,screenCols,mapRows,mapCols);
         
         for(var i = 0; i < screenCols; i++) {
             screenCells[i] = [];
@@ -78,8 +78,6 @@ new p5(function(p5)
         
         for(var i = mc.cameraX; i < mc.cameraX + screenCols; i++) {
             for(var j = mc.cameraY; j < mc.cameraY + screenRows; j++) { 
-                // console.log(i - mc.cameraX);
-                // console.log(j - mc.cameraY);
                 mapCells[i][j].x = screenCells[i - mc.cameraX][j - mc.cameraY].x;
                 mapCells[i][j].y = screenCells[i - mc.cameraX][j - mc.cameraY].y;
                 screenCells[i - mc.cameraX][j - mc.cameraY].left = mapCells[i][j].left;
