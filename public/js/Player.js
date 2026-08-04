@@ -1,29 +1,19 @@
 const delay = 50;
 let last = 0;
-const cellHeight = 50;
-const cellWidth = 50;
-const screenHeight = window.innerHeight;
-const screenWidth = window.innerWidth;
-const screenRows = Math.floor(screenHeight / cellHeight);
-const screenCols = Math.floor(screenWidth / cellWidth) + 1;
-const mapHeight = screenHeight * 5;
-const mapWidth = screenWidth * 5;
-const mapRows = Math.floor(mapHeight / cellHeight);
-const mapCols = Math.floor(mapWidth / cellWidth);
-
-
 export default class Player{
-    constructor(x,y,screenCells,cameraX,cameraY){
+    constructor(x,y,screenCells,cameraX,cameraY,cellHeight,cellWidth){
         this.x = x;
         this.y = y;
         this.screenCells = screenCells;
         this.cameraX = cameraX;
         this.cameraY = cameraY;
+        this.cellHeight = cellHeight;
+        this.cellWidth = cellWidth;
     }
 
     show(p5) {
         p5.fill(255,0,0);
-        p5.circle(this.x * cellWidth + cellWidth/2, this.y * cellHeight + cellHeight/2, Math.min(cellHeight,cellWidth) - 5);
+        p5.circle(this.x * this.cellWidth + this.cellWidth/2, this.y * this.cellHeight + this.cellHeight/2, Math.min(this.cellHeight,this.cellWidth) - 5);
     }
 
     movePlayer(p5) {

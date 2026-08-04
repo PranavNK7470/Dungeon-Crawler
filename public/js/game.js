@@ -25,7 +25,7 @@ new p5(function(p5)
     p5.setup = function() {
         p5.createCanvas(p5.windowWidth, p5.windowHeight);
         
-        mc = new Player(Math.floor(screenCols / 2), Math.floor(screenRows / 2) , screenCells,0,0);
+        mc = new Player(Math.floor(screenCols / 2), Math.floor(screenRows / 2) , screenCells,0,0,cellHeight,cellWidth);
         
         for(var i = 0; i < screenCols; i++) {
             screenCells[i] = [];
@@ -52,7 +52,6 @@ new p5(function(p5)
         
         for(var i = 0; i < mapCols; i++) {
             for(var j = 0; j < mapRows; j++) {
-                // console.log(i + " " + j);
                 if(path[i][j]) mapCells[i][j].color = 3;
                 if(mapCells[i][j] === goal) mapCells[i][j].color = 4;
             }
