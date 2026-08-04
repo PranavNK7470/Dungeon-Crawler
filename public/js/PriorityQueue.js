@@ -32,6 +32,19 @@ export default class PriorityQueue {
     }
 
     isEmpty() {
-        return this.queue.isEmpty();
+        return this.queue.length === 0 ? true : false;
+    }
+
+    delete(item) {
+        this.queue.delete(item);
+    }
+
+    has(item) {
+        if(this.queue.indexOf(item) === -1) return false;
+        return true;
+    }
+    
+    length() {
+        return this.queue.length;
     }
 }

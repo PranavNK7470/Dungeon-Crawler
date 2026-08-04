@@ -1,26 +1,22 @@
-const cellHeight = 50;
-const cellWidth = 50;
-const screenHeight = window.innerHeight;
-const screenWidth = window.innerWidth;
-const mapHeight = screenHeight * 5;
-const mapWidth = screenWidth * 5;
-const mapRows = Math.floor(mapHeight / cellHeight);
-const mapCols = Math.floor(mapWidth / cellWidth);
 const visited = new Set();
 const stack = [];
 
 export default class generateMaze {
-    constructor(indx, indy, mapCells, initx, inity) {
+    constructor(indx, indy, mapCells, initx, inity, mapRows, mapCols) {
         this.indx = indx;
         this.indy = indy;
         this.mapCells = mapCells;
         this.initx = initx;
         this.inity = inity;
-        for(var i = this.initx - 1; i <= this.initx + 1; i++) {
-            for(var j = this.inity - 1; j <= this.inity + 1; j++) {
-                visited.add(this.mapCells[i][j]);
-            }
-        } 
+        this.mapRows = mapRows;
+        this.mapCols = mapCols;
+
+        console.log("in generateMaze: " + this.mapRows + " " +  this.mapCols);
+        // for(var i = this.initx - 1; i <= this.initx + 1; i++) {
+        //     for(var j = this.inity - 1; j <= this.inity + 1; j++) {
+        //         visited.add(this.mapCells[i][j]);
+        //     }
+        // } 
     }
 
     generateMaze(p5) {
@@ -43,20 +39,20 @@ export default class generateMaze {
     removeWalls(currx, curry, chosenx, choseny) {
         if(currx < chosenx && curry === choseny) {
             //right
-            this.mapCells[currx][curry].right = false;
-            this.mapCells[chosenx][choseny].left = false;
+            this.mapCells[currx][curry].right = true;
+            this.mapCells[chosenx][choseny].left = true;
         } else if(currx > chosenx && curry === choseny) {
             //left
-            this.mapCells[currx][curry].left = false;
-            this.mapCells[chosenx][choseny].right = false;
+            this.mapCells[currx][curry].left = true;
+            this.mapCells[chosenx][choseny].right = true;
         } else if(currx === chosenx && curry < choseny) {
             //down
-            this.mapCells[currx][curry].down = false;
-            this.mapCells[chosenx][choseny].up = false;
+            this.mapCells[currx][curry].down = true;
+            this.mapCells[chosenx][choseny].up = true;
         } else if(currx === chosenx && curry > choseny) {
             //up
-            this.mapCells[currx][curry].up = false;
-            this.mapCells[chosenx][choseny].down = false;
+            this.mapCells[currx][curry].up = true;
+            this.mapCells[chosenx][choseny].down = true;
         }
     }
 
@@ -64,8 +60,8 @@ export default class generateMaze {
         var neighbours = [];
         if(x !== 0 && !visited.has(this.mapCells[x - 1][y])) neighbours.push(this.mapCells[x - 1][y]);
         if(y !== 0 && !visited.has(this.mapCells[x][y - 1])) neighbours.push(this.mapCells[x][y - 1]);
-        if(x !== mapCols - 1 && !visited.has(this.mapCells[x + 1][y])) neighbours.push(this.mapCells[x + 1][y]);
-        if(y !== mapRows - 1 && !visited.has(this.mapCells[x][y + 1])) neighbours.push(this.mapCells[x][y + 1]);
+        if(x !== this.mapCols - 1 && !visited.has(this.mapCells[x + 1][y])) neighbours.push(this.mapCells[x + 1][y]);
+        if(y !== this.mapRows - 1 && !visited.has(this.mapCells[x][y + 1])) neighbours.push(this.mapCells[x][y + 1]);
 
         return neighbours;
     }
