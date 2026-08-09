@@ -11,7 +11,6 @@ export default class generateMaze {
         this.mapRows = mapRows;
         this.mapCols = mapCols;
 
-        console.log("in generateMaze: " + this.mapRows + " " +  this.mapCols);
         // for(var i = this.initx - 1; i <= this.initx + 1; i++) {
         //     for(var j = this.inity - 1; j <= this.inity + 1; j++) {
         //         visited.add(this.mapCells[i][j]);

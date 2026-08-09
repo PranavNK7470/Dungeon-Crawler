@@ -1,7 +1,7 @@
 const delay = 50;
 let last = 0;
 export default class Player{
-    constructor(x,y,screenCells,cameraX,cameraY,cellHeight,cellWidth,screenRows, screenCols,mapRows,mapCols){
+    constructor(x,y,screenCells,cameraX,cameraY,cellHeight,cellWidth,screenRows, screenCols,mapRows,mapCols,mapCells){
         this.x = x;
         this.y = y;
         this.screenCells = screenCells;
@@ -13,6 +13,7 @@ export default class Player{
         this.screenCols = screenCols;
         this.mapRows = mapRows;
         this.mapCols = mapCols;
+        this.mapCells = mapCells;
     }
 
     show(p5) {
@@ -55,5 +56,6 @@ export default class Player{
             }
         }
         last = p5.millis();
+
     }
-}
+} 

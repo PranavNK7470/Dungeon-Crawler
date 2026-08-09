@@ -3,7 +3,7 @@ const cellHeight = 50;
 const cellWidth = 50;
 
 export default class Cell {
-    constructor(x,y,color,render,indx,indy,left,up,right,down) {
+    constructor(x,y,color,render,indx,indy,left,up,right,down,type) {
         this.x = x;
         this.y = y;
         this.color = color;
@@ -14,6 +14,7 @@ export default class Cell {
         this.up = up;
         this.right = right;
         this.down = down;
+        this.type = type;
     }
 
     show(p5) {
@@ -27,7 +28,12 @@ export default class Cell {
             }
 
             p5.stroke(255);
-            p5.strokeWeight(0.2);
+            if(this.type == 0) {
+                // mapCells
+                p5.strokeWeight(0.1);
+            } else {
+                p5.strokeWeight(0.4);
+            }
             if(!this.left) p5.line(this.x,this.y,this.x,this.y + cellHeight);
             if(!this.up) p5.line(this.x,this.y,this.x + cellWidth,this.y);
             if(!this.right) p5.line(this.x + cellWidth, this.y, this.x + cellWidth, this.y + cellHeight);
