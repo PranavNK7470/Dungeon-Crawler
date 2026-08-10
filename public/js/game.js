@@ -14,7 +14,6 @@ let mc;
 let start;
 let goal;
 
-
 import Player from "./Player.js";
 import Cell from "./Cell.js";
 import generateMaze from "./generateMaze.js";
@@ -83,7 +82,7 @@ new p5(function(p5)
                 screenCells[i - mc.cameraX][j - mc.cameraY].up = mapCells[i][j].up;
                 screenCells[i - mc.cameraX][j - mc.cameraY].right = mapCells[i][j].right;
                 screenCells[i - mc.cameraX][j - mc.cameraY].down = mapCells[i][j].down;
-                if(mapCells[i][j] === goal) {
+                if(mapCells[i][j] === goal || (mc.toggle && mapCells[i][j].color === 3)) {
                     mapCells[i][j].render = true;
                     mapCells[i][j].show(p5);
                 }
@@ -94,7 +93,6 @@ new p5(function(p5)
          
         for(var i = mc.x - 5; i < mc.x + 5; i++) {
             for(var j = mc.y - 3; j < mc.y + 3; j++) {
-                console.log(i + " " + j);
                 if(i >= 0 && i < screenCols && j >= 0 && j < screenRows) {
                     screenCells[i][j].render = true;
                     screenCells[i][j].show(p5);
@@ -102,9 +100,10 @@ new p5(function(p5)
             }
         }
 
-         
+        
         mc.movePlayer(p5);
         mc.show(p5);
+        mc.togglePath(p5);
     }
  })
  

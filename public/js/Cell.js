@@ -30,7 +30,7 @@ export default class Cell {
             p5.stroke(255);
             if(this.type == 0) {
                 // mapCells
-                p5.strokeWeight(0.1);
+                p5.strokeWeight(0);
             } else {
                 p5.strokeWeight(0.4);
             }

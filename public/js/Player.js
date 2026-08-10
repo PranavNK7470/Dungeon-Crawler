@@ -1,5 +1,9 @@
 const delay = 50;
 let last = 0;
+let lastPath = 99999;
+let recordCount = 0;
+let toggleCount = 0;
+const togglePathTime = 3000;
 export default class Player{
     constructor(x,y,screenCells,cameraX,cameraY,cellHeight,cellWidth,screenRows, screenCols,mapRows,mapCols,mapCells){
         this.x = x;
@@ -14,6 +18,7 @@ export default class Player{
         this.mapRows = mapRows;
         this.mapCols = mapCols;
         this.mapCells = mapCells;
+        this.toggle = false;
     }
 
     show(p5) {
@@ -56,6 +61,17 @@ export default class Player{
             }
         }
         last = p5.millis();
-
     }
-} 
+
+    togglePath(p5) {
+        if(p5.keyIsDown(69) || ((p5.millis() - lastPath) <= togglePathTime && recordCount > 0) && toggleCount >= 0) {
+            recordCount++;
+            if(recordCount <= 1) lastPath = p5.millis();
+            toggleCount++;
+            this.toggle = true;
+        } else {
+            this.toggle = false;
+            recordCount = 0;
+        }    
+    }
+}
