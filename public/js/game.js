@@ -11,6 +11,9 @@ const mapCols = Math.floor(mapWidth / cellWidth);
 let screenCells = [];
 let mapCells = [];
 let mc;
+let mc_image_front;
+let mc_image_left;
+let mc_image_right;
 let start;
 let goal;
 
@@ -21,11 +24,13 @@ import PathFinding from "./PathFinding.js";
 
 new p5(function(p5) 
 {
-    p5.setup = function() {
+    p5.setup = async function() {
         p5.createCanvas(p5.windowWidth, p5.windowHeight);
         
-        mc = new Player(Math.floor(screenCols / 2), Math.floor(screenRows / 2), screenCells,0,0,cellHeight,cellWidth,screenRows,screenCols,mapRows,mapCols,mapCells);
-        
+        mc_image_front = await p5.loadImage('MC_sprite.png');
+        mc_image_left = await p5.loadImage('MC_sprite_left.png');
+        mc_image_right = await p5.loadImage('MC_sprite_right.png');
+        mc = new Player(Math.floor(screenCols / 2), Math.floor(screenRows / 2), screenCells,0,0,cellHeight,cellWidth,screenRows,screenCols,mapRows,mapCols,mapCells, mc_image_front, mc_image_left, mc_image_right);
         for(var i = 0; i < screenCols; i++) {
             screenCells[i] = [];
             for(var j = 0; j < screenRows; j++) {
@@ -56,12 +61,10 @@ new p5(function(p5)
             }
         }
 
-        console.log(mapRows + " " + mapCols);
-        console.log(screenRows + " " + screenCols);
+
         console.log(mc.x + " " + mc.y);
         console.log(mc.cameraX + " "+ mc.cameraY);
-        console.log(screenCells);
-        console.log(mapCells);
+
     }
     
     p5.draw = function() {
