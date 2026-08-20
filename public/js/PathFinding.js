@@ -4,72 +4,53 @@ export default class PathFinding {
         this.goal = goal;
         this.mapRows = mapRows;
         this.mapCols = mapCols;
-        this.wasHere = Array.from({length: this.mapCols},() => Array(this.mapRows).fill(false));
-        this.correctPath = Array.from({length: this.mapCols},() => Array(this.mapRows).fill(false));
     }
 
     findNeighbours(x, y) {
         var neighbours = [];
-        if(x !== 0 && this.mapCells[x][y].left) {
-            neighbours.push(0);
-        } else neighbours.push(-1);
-        if(y !== 0 && this.mapCells[x][y].up) {
-            neighbours.push(1);
-        }else neighbours.push(-1);
-        if(x !== this.mapCols - 1 && this.mapCells[x][y].right) {
-            neighbours.push(2);
-        }else neighbours.push(-1);
-        if(y !== this.mapRows - 1 && this.mapCells[x][y].down) {
-            neighbours.push(3);
-        }else neighbours.push(-1);
-
+        if(x !== 0 && this.mapCells[x][y].left) neighbours.push([x - 1, y]);
+        if(y !== 0 && this.mapCells[x][y].up) neighbours.push([x, y - 1]);
+        if(x !== this.mapCols - 1 && this.mapCells[x][y].right) neighbours.push([x + 1, y]);
+        if(y !== this.mapRows - 1 && this.mapCells[x][y].down) neighbours.push([x, y + 1]);
         return neighbours;
     }
 
-    findPath(start) {        
-        var b = this.recursiveSolve(start.indx, start.indy);
+    findPath(start) {
+        let wasHere = Array.from({length: this.mapCols}, () => Array(this.mapRows).fill(false));
+        let correctPath = Array.from({length: this.mapCols}, () => Array(this.mapRows).fill(false));
+        let cameFrom = {};
+        let key = (x, y) => x + ',' + y;
 
-        return {pathExists : b, correctPath : this.correctPath};
-    }
+        let stack = [[start.indx, start.indy]];
+        wasHere[start.indx][start.indy] = true;
+        let found = false;
 
-    recursiveSolve(cellx, celly) {
-        //console.log("visiting: " + cellx +"  "+ celly);
+        while (stack.length !== 0) {
+            let [cx, cy] = stack.pop();
 
-        if(cellx === this.goal.indx && celly === this.goal.indy) {
-            //console.log("FOUND!!");
-            return true;
+            if (cx === this.goal.indx && cy === this.goal.indy) {
+                found = true;
+                break;
+            }
+
+            for (let [nx, ny] of this.findNeighbours(cx, cy)) {
+                if (!wasHere[nx][ny]) {
+                    wasHere[nx][ny] = true;
+                    cameFrom[key(nx, ny)] = [cx, cy];
+                    stack.push([nx, ny]);
+                }
+            }
         }
 
-        if(this.wasHere[cellx][celly] === true) return false;
-        this.wasHere[cellx][celly] = true;
+        if (found) {
+            let cx = this.goal.indx, cy = this.goal.indy;
+            correctPath[cx][cy] = true;
+            while (!(cx === start.indx && cy === start.indy)) {
+                [cx, cy] = cameFrom[key(cx, cy)];
+                correctPath[cx][cy] = true;
+            }
+        }
 
-        let neighbours = this.findNeighbours(cellx, celly);
-
-            if(neighbours[0] === 0) {
-                if(this.recursiveSolve(cellx - 1, celly)) {
-                    this.correctPath[cellx][celly] = true;
-                    return true;
-                }
-            }
-            if(neighbours[1] === 1) {
-                if(this.recursiveSolve(cellx, celly - 1)) {
-                    this.correctPath[cellx][celly] = true;
-                    return true;
-                }
-            }
-            if(neighbours[2] === 2){
-                if(this.recursiveSolve(cellx + 1, celly)) {
-                    this.correctPath[cellx][celly] = true;
-                    return true;
-                }
-            }
-            if(neighbours[3] === 3) {
-                if(this.recursiveSolve(cellx, celly + 1)) {
-                    this.correctPath[cellx][celly] = true;
-                    return true;
-                }
-            }
-
-        return false;
+        return { pathExists: found, correctPath: correctPath };
     }
-}   
+}

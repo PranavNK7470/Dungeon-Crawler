@@ -4,8 +4,8 @@ const screenHeight = window.innerHeight;
 const screenWidth = window.innerWidth;
 const screenRows = Math.floor(screenHeight / cellHeight);
 const screenCols = Math.floor(screenWidth / cellWidth) + 1;
-const mapHeight = screenHeight * 5;
-const mapWidth = screenWidth * 5;
+const mapHeight = screenHeight * 3;
+const mapWidth = screenWidth * 3;
 const mapRows = Math.floor(mapHeight / cellHeight);
 const mapCols = Math.floor(mapWidth / cellWidth);
 let screenCells = [];
@@ -16,6 +16,7 @@ let mc_image_left;
 let mc_image_right;
 let start;
 let goal;
+let pf;
 
 import Player from "./Player.js";
 import Cell from "./Cell.js";
@@ -27,9 +28,14 @@ new p5(function(p5)
     p5.setup = async function() {
         p5.createCanvas(p5.windowWidth, p5.windowHeight);
         
-        mc_image_front = await p5.loadImage('MC_sprite.png');
-        mc_image_left = await p5.loadImage('MC_sprite_left.png');
-        mc_image_right = await p5.loadImage('MC_sprite_right.png');
+
+        /*
+            use sprite animations instead of switching the pics.
+        */
+
+        mc_image_front = await p5.loadImage('./assets/MC_sprite.png');
+        mc_image_left = await p5.loadImage('./assets/MC_sprite_left.png');
+        mc_image_right = await p5.loadImage('./assets/MC_sprite_right.png');
         mc = new Player(Math.floor(screenCols / 2), Math.floor(screenRows / 2), screenCells,0,0,cellHeight,cellWidth,screenRows,screenCols,mapRows,mapCols,mapCells, mc_image_front, mc_image_left, mc_image_right);
         for(var i = 0; i < screenCols; i++) {
             screenCells[i] = [];
@@ -48,23 +54,11 @@ new p5(function(p5)
         var gm = new generateMaze(0,0,mapCells,mc.x,mc.y,mapRows,mapCols);
         gm.generateMaze(p5);
         
-        start = mapCells[mc.x][mc.y];
-        goal = mapCells[mc.x + 10][mc.y];
-        var pf = new PathFinding(mapCells,goal,mapRows,mapCols);
-        var ans = pf.findPath(start);
-        let path = ans.correctPath;
+        goal = mapCells[mapCols - 1][mapRows - 1];
+        pf = new PathFinding(mapCells,goal,mapRows,mapCols);
         
-        for(var i = 0; i < mapCols; i++) {
-            for(var j = 0; j < mapRows; j++) {
-                if(path[i][j]) mapCells[i][j].color = 3;
-                if(mapCells[i][j] === goal) mapCells[i][j].color = 4;
-            }
-        }
-
-
         console.log(mc.x + " " + mc.y);
-        console.log(mc.cameraX + " "+ mc.cameraY);
-
+        console.log("map info: " + mapCols + " " + mapRows);
     }
     
     p5.draw = function() {
@@ -74,6 +68,17 @@ new p5(function(p5)
                 mapCells[i][j].render = false;
             }
         }
+
+        var ans = pf.findPath(mapCells[mc.cameraX + mc.x][mc.cameraY + mc.y]);
+        let path = ans.correctPath;
+
+        for(var i = 0; i < mapCols; i++) {
+            for(var j = 0; j < mapRows; j++) {
+                if(path[i][j]) mapCells[i][j].color = 3;
+                if(mapCells[i][j] === goal) mapCells[i][j].color = 4;
+            }
+        }
+
 
         // initialize every mapcell and every screencell but render only ones in range.     
         
@@ -100,6 +105,13 @@ new p5(function(p5)
                     screenCells[i][j].render = true;
                     screenCells[i][j].show(p5);
                 } else continue;
+            }
+        }
+
+        for(var i = 0; i < mapCols; i++) {
+            for(var j = 0; j < mapRows; j++) {
+                if(mapCells[i][j] === goal) mapCells[i][j].color = 4;
+                else mapCells[i][j].color = 1;
             }
         }
 
