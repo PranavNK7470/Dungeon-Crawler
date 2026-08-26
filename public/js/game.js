@@ -14,7 +14,7 @@ let mc;
 let mc_image_front;
 let mc_image_left;
 let mc_image_right;
-let start;
+let wall_block;
 let goal;
 let pf;
 
@@ -36,18 +36,20 @@ new p5(function(p5)
         mc_image_front = await p5.loadImage('./assets/MC_sprite.png');
         mc_image_left = await p5.loadImage('./assets/MC_sprite_left.png');
         mc_image_right = await p5.loadImage('./assets/MC_sprite_right.png');
-        mc = new Player(Math.floor(screenCols / 2), Math.floor(screenRows / 2), screenCells,0,0,cellHeight,cellWidth,screenRows,screenCols,mapRows,mapCols,mapCells, mc_image_front, mc_image_left, mc_image_right);
+        wall_block = await p5.loadImage('./assets/wall_block.png');
+        mc = new Player(Math.floor(screenCols / 2), Math.floor(screenRows / 2), screenCells, 0, 0, cellHeight, cellWidth,
+                        screenRows, screenCols, mapRows, mapCols, mapCells, mc_image_front, mc_image_left, mc_image_right);
         for(var i = 0; i < screenCols; i++) {
             screenCells[i] = [];
             for(var j = 0; j < screenRows; j++) {
-                screenCells[i][j] = new Cell(i * cellWidth, j * cellHeight,1,true,-1,-1, false,false,false,false,1);
+                screenCells[i][j] = new Cell(i * cellWidth, j * cellHeight,1,true,-1,-1, false,false,false,false,1,wall_block);
             }
         }
         
         for(var i = 0; i < mapCols; i++) {
             mapCells[i] = [];
             for(var j = 0; j < mapRows; j++) {
-                mapCells[i][j] = new Cell(0,0,2,false,i,j,false,false,false,false,0);
+                mapCells[i][j] = new Cell(0,0,2,false,i,j,false,false,false,false,0,wall_block);
             }
         }  
         
@@ -99,8 +101,8 @@ new p5(function(p5)
 
         // fog feature
          
-        for(var i = mc.x - 5; i < mc.x + 5; i++) {
-            for(var j = mc.y - 3; j < mc.y + 3; j++) {
+        for(var i = mc.x - 2; i < mc.x + 2; i++) {
+            for(var j = mc.y - 2; j < mc.y + 2; j++) {
                 if(i >= 0 && i < screenCols && j >= 0 && j < screenRows) {
                     screenCells[i][j].render = true;
                     screenCells[i][j].show(p5);

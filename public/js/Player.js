@@ -1,4 +1,4 @@
-const delay = 50;
+const delay = 80;
 let last = 0;
 let lastPath = 99999;
 let recordCount = 0;
@@ -7,7 +7,9 @@ let image_x_offset = 10;
 let image_y_offset = 17;
 const togglePathTime = 3000;
 export default class Player{
-    constructor(x,y,screenCells,cameraX,cameraY,cellHeight,cellWidth,screenRows, screenCols,mapRows,mapCols,mapCells, mc_image_front, mc_image_left, mc_image_right){
+    constructor(x,y,screenCells,cameraX,cameraY,cellHeight,cellWidth,screenRows, screenCols,
+                     mapRows,mapCols,mapCells, mc_image_front, mc_image_left, mc_image_right)
+    {
         this.x = x;
         this.y = y;
         this.screenCells = screenCells;
